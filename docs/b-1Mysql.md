@@ -166,7 +166,7 @@ B树和B+树最主要的区别主要有两点：
 
 <img src="./面经总结.assets/image-20220823150332242.png" alt="image-20220823150332242" style="zoom:67%;" />
 
-<img src="./面经总结.assets/image-20220823150400445.png" alt="image-20220823150400445" style="zoom:67%;" />
+<img src="b-1Mysql.assets/image-20220823150400445.png" alt="image-20220823150400445" style="zoom:67%;" />
 
 #### 各自优缺点？
 

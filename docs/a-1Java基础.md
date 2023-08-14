@@ -1278,7 +1278,7 @@ public class Main{
 
 异常框图
 
-<img src="a-1Java%E5%9F%BA%E7%A1%80.assets/image-20220807095457535.png" alt="image-20220807095457535" style="zoom:67%;" />
+<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220807095457535.png" alt="image-20220807095457535" style="zoom:67%;" />
 
 除了以上的分类，异常还能分为非检查异常和检查异常
 
@@ -1513,7 +1513,7 @@ https://blog.csdn.net/securitit/article/details/106694445
 浅拷贝：对基本数据类型进行值传递，对引用数据类型**复制一个引用指向原始引用的对象**，就是复制的引用和原始引用指向同一个对象。
 具体区别看下图
 
-<img src="a-1Java%E5%9F%BA%E7%A1%80.assets/image-20220808111649801.png" alt="image-20220808111649801" style="zoom:67%;" />
+<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220808111649801.png" alt="image-20220808111649801" style="zoom:67%;" />
 
 深拷贝的实现方式
 

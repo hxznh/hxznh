@@ -4,9 +4,9 @@
 
 Map接口和Collection接口是所有集合框架的父接口。下图中的实线和虚线看着有些乱，其中接口与接口之间如果有联系为继承关系，类与类之间如果有联系为继承关系，类与接口之间则是类实现接口。重点掌握的抽象类有 HashMap ， LinkedList ， HashTable ， ArrayList ， HashSet ， Stack ，TreeSet ， TreeMap 。注意： Collection 接口不是 Map 的父接口
 
-![image-20220809002424108](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809002424108.png)
+![image-20220809002424108](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809002424108.png)
 
-![image-20220809002430738](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809002430738.png)
+![image-20220809002430738](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809002430738.png)
 
 ## List，Set，Map三者的区别？ ＊＊＊
 
@@ -433,11 +433,11 @@ HashSet 的特点是存储元素时无序且唯一，在向 HashSet 中添加对
 
 - JDK1.7的底层数据结构(数组+链表)
 
-![image-20220809232602314](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809232602314.png)
+![image-20220809232602314](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809232602314.png)
 
 - JDK1.8的底层数据结构(数组+链表)
 
-![image-20220809232614263](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809232614263.png)
+![image-20220809232614263](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809232614263.png)
 
 - JDK1.7的Hash函数
 
@@ -476,13 +476,13 @@ HashMap在JDK1.7和JDK1.8中有哪些不同点：
 
 > 阿里巴巴开发规约
 
-![image-20220820223617861](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220820223617861.png)
+![image-20220820223617861](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220820223617861.png)
 
 ### HashMap的put方法的具体流程？　＊＊
 
 HashMap的主要流程可以看下面这个流程图，逻辑非常清晰。
 
-![image-20220809233103622](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809233103622.png)
+![image-20220809233103622](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809233103622.png)
 
 > 判断现有节点和即将put的数据是否相同的过程
 
@@ -631,12 +631,12 @@ hashCode() 处理后的哈希值范围太大，不可能在内存建立这么大
 - JDK1.7
   在JDK1.7中， ~~ConcurrentHashMap~~ 采用 Segment 数组 + HashEntry 数组的方式进行实现。Segment 实现了 ~~ReentrantLock~~ ，所以 Segment 有锁的性质， HashEntry 用于存储键值对。一个 ~~ConcurrentHashMap~~ 包含着一个 Segment 数组，一个 Segment 包含着一个 HashEntry 数组，HashEntry 是一个链表结构，如果要获取 HashEntry 中的元素，要先获得 Segment 的锁。
 
-![image-20220809235003056](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809235003056.png)
+![image-20220809235003056](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809235003056.png)
 
 - JDK1.8
   在JDK1.8中，不在是 Segment + HashEntry 的结构了，而是和 HashMap 类似的结构，Node数组+链表/红黑树，采用 CAS + synchronized 来保证线程安全。当链表长度大于8，链表转化为红黑树。在JDK1.8中 synchronized 只锁链表或红黑树的头节点，是一种相比于 segment 更为细粒度的锁，锁的竞争变小，所以效率更高。
 
-![image-20220809235107643](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809235107643.png)
+![image-20220809235107643](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809235107643.png)
 
 总结一下：
 
@@ -647,7 +647,7 @@ hashCode() 处理后的哈希值范围太大，不可能在内存建立这么大
 
 HashTable 的底层数据结构是数组+链表，链表主要是为了解决哈希冲突，并且**整个数组**都是 ~~synchronized~~ 修饰的，所以 HashTable 是线程安全的，但**锁的粒度太大**，锁的竞争非常激烈，效率很低。
 
-![image-20220809235229866](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220809235229866.png)
+![image-20220809235229866](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220809235229866.png)
 
 ### HashMap、ConcurrentHashMap及Hashtable 的区别　＊＊＊
 

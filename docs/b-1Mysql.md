@@ -89,15 +89,11 @@ https://blog.csdn.net/weixin_41018580/article/details/107245630
 索引的数据结构主要有B+树和哈希表，对应的索引分别为B+树索引和哈希索引。InnoDB引擎的索引类型有B+树索引和哈希索引，默认的索引类型为B+树索引。
 
 - B+树索引
-  熟悉数据结构的同学都知道，B+树、平衡二叉树、红黑树都是经典的数据结构。在B+树中，所有的记录节点都是按照键值大小的顺序放在叶子节点上，如下图。  <img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823112211737.png" alt="image-20220823112211737" style="zoom:67%;" />
+  熟悉数据结构的同学都知道，B+树、平衡二叉树、红黑树都是经典的数据结构。在B+树中，所有的记录节点都是按照键值大小的顺序放在叶子节点上，如下图。  <img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823112211737.png" alt="image-20220823112211737" style="zoom:67%;" />
 
 从上图可以看出 ，因为B+树具有有序性，并且所有的数据都存放在叶子节点，所以查找的效率非常高，并且支持排序和范围查找。
 
-B+树的索引又可以分为主索引和辅助索引。其中主索引为聚簇索引，辅助索引为非聚簇索引。聚簇索引是以主键作为B+ 树索引的键值所构成的B+树索引，聚簇索引的叶子节点存储着完整的数据记录；非聚簇索引是以非主键的列作为B+树索引的键值所构成的B+树索引，非聚簇索引的叶子节点存储着主键值。所以使用非聚簇索引进行查询时，会先找到主键值，然后到根据聚簇索引找到主键对应的数据域。上图中叶子节点存储的
-
-
-
-是数据记录，为聚簇索引的结构图，非聚簇索引的结构图如下： <img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823112321854.png" alt="image-20220823112321854" style="zoom:67%;" />`
+B+树的索引又可以分为主索引和辅助索引。其中主索引为聚簇索引，辅助索引为非聚簇索引。聚簇索引是以主键作为B+ 树索引的键值所构成的B+树索引，聚簇索引的叶子节点存储着完整的数据记录；非聚簇索引是以非主键的列作为B+树索引的键值所构成的B+树索引，非聚簇索引的叶子节点存储着主键值。所以使用非聚簇索引进行查询时，会先找到主键值，然后到根据聚簇索引找到主键对应的数据域。上图中叶子节点存储的是数据记录，为聚簇索引的结构图，非聚簇索引的结构图如下： <img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823112321854.png" alt="image-20220823112321854" style="zoom:67%;" />`
 
 上图中的字母为数据的非主键的列值，假设要查询该列值为B的信息，则需先找到主键7，在到聚簇索引中查询主键7所对应的数据域。
 
@@ -143,9 +139,9 @@ B树和B+树最主要的区别主要有两点：
 
 两者的结构图如下。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823113141198.png" alt="image-20220823113141198" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823113141198.png" alt="image-20220823113141198" style="zoom:67%;" />
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823113149673.png" alt="image-20220823113149673" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823113149673.png" alt="image-20220823113149673" style="zoom:67%;" />
 
 ### 数据库为什么使用B+树而不是B树？
 
@@ -168,9 +164,9 @@ B树和B+树最主要的区别主要有两点：
 
 可以从非常经典的两张图看看它们的区别(图片来源于网络)：
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823150332242.png" alt="image-20220823150332242" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823150332242.png" alt="image-20220823150332242" style="zoom:67%;" />
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823150400445.png" alt="image-20220823150400445" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823150400445.png" alt="image-20220823150400445" style="zoom:67%;" />
 
 #### 各自优缺点？
 
@@ -429,24 +425,24 @@ MVCC(multiple version concurrent control)是一种控制并发的方法，主要
 
 它们大致长这样，省略了具体字段的值。·
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823165057144.png" alt="image-20220823165057144" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823165057144.png" alt="image-20220823165057144" style="zoom: 50%;" />
 
 - undo日志
   MVCC做使用到的快照会存储在Undo日志中，该日志通过回滚指针将一个一个数据行的所有快照连接起来。它们大致长这样。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823165125178.png" alt="image-20220823165125178" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823165125178.png" alt="image-20220823165125178" style="zoom: 50%;" />
 
 举一个简单的例子说明下，比如最开始的某条记录长这样
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230328084835348.png" alt="image-20230328084835348" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230328084835348.png" alt="image-20230328084835348" style="zoom:67%;" />
 
 现在来了一个事务对他的年龄字段进行了修改，变成了这样
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230328085026266.png" alt="image-20230328085026266" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230328085026266.png" alt="image-20230328085026266" style="zoom:67%;" />
 
 现在又来了一个事务2对它的性别进行了修改，它又变成了这样  
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230328085055893.png" alt="image-20230328085055893" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230328085055893.png" alt="image-20230328085055893" style="zoom:67%;" />
 
 从上面的分析可以看出，事务对同一记录的修改，记录的各个会在Undo日志中连接成一个线性表，在表头的就是最新的旧纪录。
 
@@ -522,7 +518,7 @@ binlog 日志默认是没有启动的，可以通过配置参数 **log-bin** 或
 
 3、**从库的 SQL 线程** 负责读取 relay log 在本地进行重放。
 
-![image-20230329085835659](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230329085835659-1691939927251.png)
+![image-20230329085835659](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230329085835659-1692070770652.png)
 
 #### redo log 日志
 
@@ -569,7 +565,7 @@ Innodb 基于磁盘存储，同时按 **页** 的方式来管理记录，一个�
 >
 > 需要注意的是，在 Innodb 1.2.x 之前，Async Flush 会阻塞发现问题的用户线程，  Sync Flush 则会阻塞所有线程；但在 Mysql 5.6 之后，刷新脏页由单独的 Page cleaner thread  完成，都不再阻塞用户线程。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230329090114550.png" alt="image-20230329090114550" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230329090114550.png" alt="image-20230329090114550" style="zoom: 50%;" />
 
 **innodb_flush_log_at_trx_commit**： 提交事务时的重做日志同步磁盘策略。
 
@@ -589,7 +585,7 @@ redo log buffer --> page cache --> redo log file；
 
 设置为 2 的时候也是等待主线程每秒的任务刷新磁盘，但是在事务提交时，已经将日志缓存写到了操作系统的 page cache，所以只要操作系统不重启，内容也不会丢失。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230329090316826.png" alt="image-20230329090316826" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230329090316826.png" alt="image-20230329090316826" style="zoom: 50%;" />
 
 #### 为什么需要 redo log
 
@@ -649,7 +645,7 @@ MySQL在**可重复读**隔离级别下，是通过MVCC机制避免幻读的。
 
 MVCC机制，可以简单理解成在事务启动的时候对数据库拍了个“**快照**”，它保留了那个时刻数据库的数据状态，那么这个事务后续的读取都可以从这个“**快照**”中获取，哪怕其他事务新加了数据，也不会影响到“**快照**”中的数据，也就不会出现幻读了。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230323083916834.png" alt="image-20230323083916834" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230323083916834.png" alt="image-20230323083916834" style="zoom: 67%;" />
 
 - 事务A在启动的时候创建了一个“**快照**”，查询出结果“小红，小蓝”
 - 后续事务B插入一条记录“小飞”，提交
@@ -667,13 +663,13 @@ MVCC机制，可以简单理解成在事务启动的时候对数据库拍了个�
 
 也就是说不能读取“**快照**”了，因为你要最新状态的数据，那么能不能在当前读的时候，对这段区间都加上锁，让别的事务阻塞，无法插入。因此，MySQL `InnoDB`引擎为了解决可重复读隔离级别使用当前读而造成的幻读问题，引入了**间隙锁**。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230323085425924.png" alt="image-20230323085425924" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230323085425924.png" alt="image-20230323085425924" style="zoom:67%;" />
 
 表中有一个范围 id 为（3，5）间隙锁，那么其他事务就无法插入 id = 4 这条记录了，这样就有效的防止幻读现象的发生。
 
 **举个例子：**
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230323085545616.png" alt="image-20230323085545616" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230323085545616.png" alt="image-20230323085545616" style="zoom:67%;" />
 
 - 事务A的 `for_update`是属于当前读，它会对锁定 id 范围 ` (2, +∞]` ，相当于理解是**间隙锁。**
 - 事务B插入了 `id=5`的数据，`(2, +∞]`范围被锁定了，所以无法插入，阻塞。
@@ -690,7 +686,7 @@ MySQL默认采用的隔离级别是可重复读，在这种隔离级别下不同
 
 但是，强调一点的是，MySQL在可重复读级别下，并没有完完全全的解决幻读问题，特别是在一个事务的快照读和当前读穿插使用的场景下，还是会出现幻读的情况，比如下图所示。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/1679533538160.png" alt="1679533538160" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/1679533538160.png" alt="1679533538160" style="zoom:67%;" />
 
 
 
@@ -736,7 +732,7 @@ MyISAM默认采用表级锁，InnoDB默认采用行级锁。
 
 
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823185806395.png" alt="image-20220823185806395" style="zoom:33%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823185806395.png" alt="image-20220823185806395" style="zoom:33%;" />
 
 MySQL中InnoDB引擎的行锁模式及其是如何实现的？
 
@@ -753,7 +749,7 @@ MySQL中InnoDB引擎的行锁模式及其是如何实现的？
 
 
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220823185839682.png" alt="image-20220823185839682" style="zoom:33%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220823185839682.png" alt="image-20220823185839682" style="zoom:33%;" />
 
 行锁实现方式：INnoDB的行锁是通过给索引上的索引项加锁实现的，如果没有索引，InnoDB将通过隐藏的聚簇索引来对记录进行加锁。
 
@@ -851,17 +847,19 @@ MySQl的连接查询主要可以分为外连接，内连接，交叉连接
   外连接主要分为左外连接(LEFT JOIN)、右外连接(RIGHT JOIN)、全外连接。
   左外连接：显示左表中所有的数据及右表中符合条件的数据，右表中不符合条件的数据为null
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824110752584.png" alt="image-20220824110752584" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824110752584.png" alt="image-20220824110752584" style="zoom: 50%;" />
 
   右外连接：显示右表中所有的数据及左表中符合条件的数据，左表中不符合条件的数据为null。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824110901302.png" alt="image-20220824110901302" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824110901302.png" alt="image-20220824110901302" style="zoom:50%;" />
 
-    MySQL中不支持全外连接。
+```
+MySQL中不支持全外连接。
+```
 
 - 内连接：只显示符合条件的数据
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824110923406.png" alt="image-20220824110923406" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824110923406.png" alt="image-20220824110923406" style="zoom:50%;" />
 
 - 交叉连接：使用笛卡尔积的一种连接。
   笛卡尔积，百度百科的解释：两个集合X和Y的笛卡尔积表示为X × Y，第一个对象是X的成员而第二个对象是Y的所有可能有序对的其中一个成员 。例如：A={a,b}，B={0,1,2}，A × B = {(a,0)，(a,1)， (a,2)，(b,0)，(b,1)，(b,2)}
@@ -1000,7 +998,7 @@ MySQL在执行SQL语句的时候会临时创建一些存储中间结果集的表
 
 ### Explain
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230323091950321.png" alt="image-20230323091950321" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230323091950321.png" alt="image-20230323091950321" style="zoom: 50%;" />
 
 #### id
 
@@ -1016,7 +1014,7 @@ id这一列代表sql语句执行的顺序，id值越大的行，越先执行，i
 
    explain SELECT * from student：可以看到，这个sql的explain执行计划上的select_type就是simple
 
-   <img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20230323092105685.png" alt="image-20230323092105685" style="zoom: 50%;" />
+   <img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20230323092105685.png" alt="image-20230323092105685" style="zoom: 50%;" />
 
 2. Primary：对于union、union all、子查询的大查询，最左侧的就是primary，复杂查询中最外层的select
 
@@ -1196,7 +1194,7 @@ Explain select * from student order by name（Using filesort）
 
 SnowFlake 中文意思为雪花，故称为雪花算法。最早是 Twitter 公司在其内部用于分布式环境下生成唯一 ID。在2014年开源 scala 语言版本。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220929092004360.png" alt="image-20220929092004360" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220929092004360.png" alt="image-20220929092004360" style="zoom:50%;" />
 
 雪花算法的原理就是生成一个的 64 位比特位的 long 类型的唯一 id。
 
@@ -1494,7 +1492,7 @@ ORDER BY
 
 执行顺序如下：
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824160323674-1692004642576.png" alt="image-20220824160323674" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824160323674.png" alt="image-20220824160323674" style="zoom:67%;" />
 
 - FROM：对SQL语句执行查询时，首先对关键字两边的表以笛卡尔积的形式执行连接，并产生一个虚表V1。虚表就是视图，数据会来自多张表的执行结果。
 - ON：对FROM连接的结果进行ON过滤,并创建虚表V2
@@ -1543,7 +1541,7 @@ InnoDB会根据主键建立索引树，如果没有指定主键，Mysql会找一
 - 可以直接在树的尾部添加结点，插入数据时不用在树中搜索一遍
 - 在插入数据时，如果主键不是自增的，且该数据要插入的数据页正好存满了，需要新开一页，将原先页中最后的数据移动到新的这一页中，才能将新插入的数据放进正确的位置。这个过程比较浪费性能。一页的大小默认为 16kb
 
-![image-20220822110138574](https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220822110138574-1691939927252.png)
+![image-20220822110138574](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220822110138574-1692070770652.png)
 
 > 3层B+树能存多少数据？
 
@@ -1564,11 +1562,11 @@ create table test {
 
 则一共可以存放 1638 * 1638 * 16 / 1kb = 42,928,704
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220822111935262.png" alt="image-20220822111935262" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220822111935262.png" alt="image-20220822111935262" style="zoom: 50%;" />
 
 > 如果再创建一个 bcd 字段的索引
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220822113136149.png" alt="image-20220822113136149" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220822113136149.png" alt="image-20220822113136149" style="zoom:50%;" />
 
 则数据区域存放的为主键的值，InnoDB获得主键后再回表通过主键索引去获取数据
 
@@ -1681,7 +1679,7 @@ EXPLAIN SELECT c FROM test;		-- 使用了 idx_test_bcd
 
 - 数据库自增ID：在分库分表表后使用数据库自增ID，需要一个专门用于生成主键的库，每次服务接收到请求，先向这个库中插入一条没有意义的数据，获取一个数据库自增的ID，利用这个ID去分库分表中写数据。优点：简单易实现。缺点：在高并发下存在瓶颈。系统结构如下图（图片来源于网络）
 
-  <img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824170838205.png" alt="image-20220824170838205" style="zoom:67%;" />
+  <img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824170838205.png" alt="image-20220824170838205" style="zoom:67%;" />
 
 - Redis生成ID：优点：不依赖数据库，性能比较好。缺点：引入新的组件会使得系统复杂度增加
 
@@ -1706,14 +1704,14 @@ MySQL复制：为保证主服务器和从服务器的数据一致性，在向主
 - I/O线程：负责从主服务器上读取二进制日志（Binary log），并写入从服务器的中继日志（Relay log）中。
 - SQL线程：负责读取中继日志，解析出主服务器中已经执行的数据更改并在从服务器中重放复制过程如下（图片来源于网络）：
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824171239936.png" alt="image-20220824171239936" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824171239936.png" alt="image-20220824171239936" style="zoom:67%;" />
 
 1. Master在每个事务更新数据完成之前，将操作记录写入到binlog中。
 2. Slave从库连接Master主库，并且Master有多少个Slave就会创建多少个binlog dump线程。当Master节点的binlog发生变化时，binlog dump会通知所有的Slave，并将相应的binlog发送给Slave。
 3. I/O线程接收到binlog内容后，将其写入到中继日志（Relay log）中。
 4. SQL线程读取中继日志，并在从服务器中重放。
 
-<img src="https://gitee.com/Zhengjunzeng/typora_image/raw/master/image/image-20220824171632127.png" alt="image-20220824171632127" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220824171632127.png" alt="image-20220824171632127" style="zoom:67%;" />
 
 > 主从复制的作用
 

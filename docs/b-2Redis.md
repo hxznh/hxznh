@@ -18,7 +18,7 @@ Redis是一个高性能的非关系型的键值对数据库，使用**C**编写�
 
 - **支持事务**，Redis所有的操作都是原子性的，并且还支持几个操作合并后的原子性执行
 
-  ~~原子性~~指操作要么成功执行，要么失败不执行，不会执行一部分。
+  `原子性`指操作要么成功执行，要么失败不执行，不会执行一部分。
 
 - **支持主从复制**，主机可以自动将数据同步到从机，进行读写分离。
 
@@ -607,7 +607,7 @@ Redis Cluster是一种服务端Sharding技术，Redis Cluster并没有使用一�
 > Redis Bus
 
 首先要知道Redis Cluster是一个去中心化的架构，不存在统一的配置中心，Redis Cluster中的每个节点都保存了集群的配置信息，在Redis Cluster中，这个配置信息通过Redis Cluster Bus进行交互，并最后达成一致性。
-配置信息的一致性主要依靠 ~~PING/PONG~~ ，每个节点向其他节点频繁的周期性的发送PING/PONG消息。对于大规模的集群，如果每次PING/PONG 都携带着所有节点的信息，则网络开销会很大。此时Redis Cluster 在每次PING/PONG，只包含了**随机的一部分节点信息**。由于交互比较频繁，短时间的几次交互之后，集群的状态也会达成一致。
+配置信息的一致性主要依靠 `PING/PONG` ，每个节点向其他节点频繁的周期性的发送PING/PONG消息。对于大规模的集群，如果每次PING/PONG 都携带着所有节点的信息，则网络开销会很大。此时Redis Cluster 在每次PING/PONG，只包含了**随机的一部分节点信息**。由于交互比较频繁，短时间的几次交互之后，集群的状态也会达成一致。
 
 当Cluster 结构不发生变化时，各个节点通过 gossip 协议 （Redis Cluster各个节点之间交换数据、通信所采用的一种协议）在几轮交互之后，便可以得知Cluster的结构信息，达到一致性的状态。但是当集群结构发生变化时（故障转移/分片迁移等），优先得知变更的节点会将自己的最新信息扩散到 Cluster，并最终达到一致。
 
@@ -709,7 +709,7 @@ Redis2.8及以后，从节点可以发送psync命令请求同步数据，此时�
 
 如果出现网络问题断开，会自动重连，并且支持断点续传，接着上次复制的地方继续复制，而不是重新复制一份。
 
-下面说下其中的实现细节，首先需要了解~~replication buffer~~和~~replication backlog~~
+下面说下其中的实现细节，首先需要了解`replication buffer`和`replication backlog`
 
 **replication buffer**：主库连接的每一个从库的对应一个 replication buffer，主库执行完每一个操作命令后，会将命令分别写入每一个从库所对应的 replication buffer
 
@@ -1153,7 +1153,7 @@ https://www.redis.com.cn/topics/mass-insert.html
 
 上述场景可以通过定时任务采用数据库/非关系型数据库轮询方案或延迟队列，现主要介绍下Redis实现的延迟队列
 
-可以通过Redis的~~zset~~命令实现延迟队列，ZSET是Redis的有序集合，通过 `zadd score1 value1` 命令向内存中生产消息，并利用设置好的时间戳作为score进行排序，然后通过 ~~zrangebysocre~~ 查询符合条件的所有待处理的任务，循环执行，也可以 `zrangebyscore key min max withscores limit 0 1` 查询最早的一条任务，来进行消费，如下图（画的第二种，好画点）
+可以通过Redis的`zset`命令实现延迟队列，ZSET是Redis的有序集合，通过 `zadd score1 value1` 命令向内存中生产消息，并利用设置好的时间戳作为score进行排序，然后通过 `zrangebysocre` 查询符合条件的所有待处理的任务，循环执行，也可以 `zrangebyscore key min max withscores limit 0 1` 查询最早的一条任务，来进行消费，如下图（画的第二种，好画点）
 
 <img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220818153013296.png" alt="image-20220818153013296" style="zoom:67%;" />
 

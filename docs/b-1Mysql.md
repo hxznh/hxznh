@@ -188,7 +188,7 @@ B树和B+树最主要的区别主要有两点：
 
 ### 非聚簇索引一定会进行回表查询吗？
 
-上面是说了非聚簇索引的叶子节点存储的是主键，也就是说要先通过非聚簇索引找到主键，再通过聚簇索引找到主键所对应的数据，后面这个再通过聚簇索引找到主键对应的数据的过程就是回表查询，那么非聚簇索引就一定会进行回表查询吗？答案是不一定的，这里涉及到一个**索引覆盖**的问题，如果查询的数据再辅助索引上完全能获取到便不需要回表查询。例如有一张表存储着个人信息包括id、name、age等字段。假设聚簇索引是以~~ID~~为键值构建的索引，非聚簇索引是以~~name~~为键值构建的索引， `select id,name from user where name = 'zhangsan'`; 这个查询便不需要进行回表查询因为，通过非聚簇索引已经能全部检索出数据，这就是索引覆盖的情况。如果查询语句是这样， `select id,name,age from user where name = 'zhangsan'`; 则需要进行回表查询，因为通过非聚簇索引不能检索出~~age~~的值。那应该如何解决那呢？只需要将索引覆盖即可，建立age和name的联合索引再使用 `select id,name,age from user where name = 'zhangsan';` 进行查询即可。
+上面是说了非聚簇索引的叶子节点存储的是主键，也就是说要先通过非聚簇索引找到主键，再通过聚簇索引找到主键所对应的数据，后面这个再通过聚簇索引找到主键对应的数据的过程就是回表查询，那么非聚簇索引就一定会进行回表查询吗？答案是不一定的，这里涉及到一个**索引覆盖**的问题，如果查询的数据再辅助索引上完全能获取到便不需要回表查询。例如有一张表存储着个人信息包括id、name、age等字段。假设聚簇索引是以`ID`为键值构建的索引，非聚簇索引是以`name`为键值构建的索引， `select id,name from user where name = 'zhangsan'`; 这个查询便不需要进行回表查询因为，通过非聚簇索引已经能全部检索出数据，这就是索引覆盖的情况。如果查询语句是这样， `select id,name,age from user where name = 'zhangsan'`; 则需要进行回表查询，因为通过非聚簇索引不能检索出`age`的值。那应该如何解决那呢？只需要将索引覆盖即可，建立age和name的联合索引再使用 `select id,name,age from user where name = 'zhangsan';` 进行查询即可。
 
 所以通过索引覆盖能解决非聚簇索引回表查询的问题。
 
@@ -197,7 +197,7 @@ B树和B+树最主要的区别主要有两点：
 - 对于中大型表建立索引非常有效，对于非常小的表，一般全部表扫描速度更快些。
 - 对于超大型的表，建立和维护索引的代价也会变高，这时可以考虑分区技术。
 - 如果表的增删改非常多，而**查询需求非常少**的话，那就没有必要建立索引了，因为维护索引也是需要代价的。
-- 一般不会出现在 ~~where~~ 条件中的字段就没有必要建立索引了。
+- 一般不会出现在 `where` 条件中的字段就没有必要建立索引了。
 - 多个字段经常被查询的话可以考虑联合索引。
 - 字段多且字段值没有重复的时候考虑唯一索引。
 - 字段多且有重复的时候考虑普通索引。
@@ -250,9 +250,9 @@ B树和B+树最主要的区别主要有两点：
 > 删除索引
 
 - 删除主键索引
-  ~~alter table 表名 drop primary key~~
+  `alter table 表名 drop primary key`
 - 删除其他索引
-  ~~alter table 表名 drop key~~
+  `alter table 表名 drop key`
 
 ### 使用索引查询时性能一定会提升吗？
 
@@ -348,7 +348,7 @@ B树和B+树最主要的区别主要有两点：
 - 在索引中使用函数会导致索引失效，例如 `select * from table_name where abs(a) = 1`
 - 在使用like查询时以%开头会导致索引失效
 - 索引上使用！、=、<>进行判断时会导致索引失效，例如 `select * from table_name where a != 1`
-- 索引字段上使用 ~~is null/is not null~~判断时会导致索引失效，例如 `select * from table_name where a is null`
+- 索引字段上使用 `is null/is not null`判断时会导致索引失效，例如 `select * from table_name where a is null`
 
 ## 数据库的事务　＊＊＊
 
@@ -419,9 +419,9 @@ MVCC(multiple version concurrent control)是一种控制并发的方法，主要
   系统版本号：是一个自增的ID，每开启一个事务，系统版本号都会递增。
   事务版本号：事务版本号就是事务开始时的系统版本号，可以通过事务版本号的大小判断事务的时间顺序。
 - 行记录隐藏的列
-  ~~DB_ROW_ID~~：所需空间6byte，隐含的自增ID，用来生成聚簇索引，如果数据表没有指定聚簇索引，InnoDB会利用这个隐藏ID创建聚簇索引。
-  ~~DB_TRX_ID~~：所需空间6byte，最近修改的事务ID，记录创建这条记录或最后一次修改这条记录的事务ID。
-  ~~DB_ROLL_PTR~~：所需空间7byte，回滚指针，指向这条记录的上一个版本。
+  `DB_ROW_ID`：所需空间6byte，隐含的自增ID，用来生成聚簇索引，如果数据表没有指定聚簇索引，InnoDB会利用这个隐藏ID创建聚簇索引。
+  `DB_TRX_ID`：所需空间6byte，最近修改的事务ID，记录创建这条记录或最后一次修改这条记录的事务ID。
+  `DB_ROLL_PTR`：所需空间7byte，回滚指针，指向这条记录的上一个版本。
 
 它们大致长这样，省略了具体字段的值。·
 
@@ -1509,17 +1509,17 @@ ORDER BY
 1. 合并多条insert为一条 即: insert into t values(a,b,c), (d,e,f),
    原因分析:主要原因是多条insert合并后日志量(MySQL的binlog和innodb的事务日志)减少了，降低日志刷盘的数据量和频率，从而提高效率。通过合并SQL语句，同时也能减少SQL语句解析的次数，减少网络传输的I0。
 
-2. 修改参数~~bulk_insert_buffer_size~~, 调大批量插入的缓存;
+2. 修改参数`bulk_insert_buffer_size`, 调大批量插入的缓存;
 
-3. 设置~~innodb_flush_log_at_trx_commit~~ = 0 相对于~~innodb_flush_log_at_trx_commit~~ = 1可以十分明显的提升导入速度;
-   ~~innodb_flush_log_at_trx_commit~~ 参数解释如下:
+3. 设置`innodb_flush_log_at_trx_commit` = 0 相对于`innodb_flush_log_at_trx_commit` = 1可以十分明显的提升导入速度;
+   `innodb_flush_log_at_trx_commit` 参数解释如下:
    0: log buffer中的数据将以每秒一次的频率写入到log file中，且同时会进行文件系统到磁盘的同步操作，但是每个事务的commit并不会触发任何log buffer 到log file的刷新或者文件系统到磁盘的刷新操作;
    1;在每次事务提交的时候将log buffer 中的数据都会写入到log file, 同时也会触发文件系统到磁盘的同步;
    2:事务提交会触发log buffer到log file的刷新，但并不会触发磁盘文件系统到磁盘的同步。此外，每秒会有一次文件系统到磁盘同步操作。
 
 4. 手动使用事务
 
-   Mysql 事务默认是 ~~autocommit~~ 的，所以可以手动提交事务，减少每个insert语句就创建一个事务带来的性能消耗。
+   Mysql 事务默认是 `autocommit` 的，所以可以手动提交事务，减少每个insert语句就创建一个事务带来的性能消耗。
 
    一般1000条insert提交一次事务，具体情况可以根据业务需求决定。
 

@@ -450,8 +450,8 @@ G1收集器的运作步骤如下：
 
 JVM主要提供三个类加载器:
 
-- 启动类加载器（Bootstrap ClassLoader）：由C++语言实现，是虚拟机自身的一部分，负责加载存放在 ~~<JAVA_HOME>\lib~~ （比如rt.jar、resources.jar、charsets.jar和class等），或被 ~~-Xbootclasspath~~ 参数所指定路径中的并且被虚拟机识别的类库。
-- 扩展类加载器（Extension ClassLoader）：由Java语言实现，独立于虚拟机外部，负责加载 ~~<JAVA_HOME>\lib\ext~~ 目录中的类库。
+- 启动类加载器（Bootstrap ClassLoader）：由C++语言实现，是虚拟机自身的一部分，负责加载存放在 `<JAVA_HOME>\lib` （比如rt.jar、resources.jar、charsets.jar和class等），或被 `-Xbootclasspath` 参数所指定路径中的并且被虚拟机识别的类库。
+- 扩展类加载器（Extension ClassLoader）：由Java语言实现，独立于虚拟机外部，负责加载 `<JAVA_HOME>\lib\ext` 目录中的类库。
 - 应用程序类加载器（Application ClassLoader）：由Java语言实现，独立于虚拟机外部，负责加载用户路径上所指定的类库，如果程序中没有自己定义过的类加载器，一般情况这个是程序中的默认类加载器
 
 ### 什么是双亲委派机制
@@ -468,7 +468,7 @@ JVM主要提供三个类加载器:
 
 #### 介绍完双亲委派的概念，那双亲委派机制有什么好处呢？
 
-双亲委派的保证了Java程序稳定地运行，可以**避免类地重复加载**（父类加载器加载过，子加载器不会再进行加载），**保证Java的核心API不被篡改**，例如，你自己编写了一个~~java.lang.Object~~类，也不会被加载，因为根据双亲委派机制，会由启动类加载器进行加载，会先加载位于rt.jar中的~~java.lang.Object~~类，并且其他子类加载器不会再去加载ava.lang.Object类。
+双亲委派的保证了Java程序稳定地运行，可以**避免类地重复加载**（父类加载器加载过，子加载器不会再进行加载），**保证Java的核心API不被篡改**，例如，你自己编写了一个`java.lang.Object`类，也不会被加载，因为根据双亲委派机制，会由启动类加载器进行加载，会先加载位于rt.jar中的`java.lang.Object`类，并且其他子类加载器不会再去加载ava.lang.Object类。
 
 #### 那双亲委派机制的弊端是什么呢？
 
@@ -478,13 +478,13 @@ JVM主要提供三个类加载器:
 
 `Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql","zjz", "zjz");`
 
-DriverManager类是在java.sql包中，java.sql包的位置是~~jdk\jre\lib\rt.jar~~，也就是DriverManager类会先被启动类加载器加载，类在加载时其中有这样一段代码
+DriverManager类是在java.sql包中，java.sql包的位置是`jdk\jre\lib\rt.jar`，也就是DriverManager类会先被启动类加载器加载，类在加载时其中有这样一段代码
 `ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(Driver.class);`
 这会尝试加载classpath下面的所有实现了Driver接口的实现类，而实现了Driver接口的第三方类库应由应用类加载器加载，这样一来启动类加载器加载的类使用了启动类加载器加载的类，违背双亲委派机制的原理
 
 #### 如何破坏双亲委派机制
 
-这个需要先去了解双亲委派是怎么实现的，看下~~java.lang.ClassLoader~~的loadClass()源码就知道了，这里就不展开写了，想破环双亲委派自定义一个类加载器，重写其中的loadClass()方法即可。
+这个需要先去了解双亲委派是怎么实现的，看下`java.lang.ClassLoader`的loadClass()源码就知道了，这里就不展开写了，想破环双亲委派自定义一个类加载器，重写其中的loadClass()方法即可。
 
 #### 有哪些打破双亲委派机制的例子
 
@@ -612,7 +612,7 @@ JVM调优肯定不是乱调的，也应先确定瓶颈及调优目标，如下�
 
    1. 因为是偶发性的，所以第一次简单的认为就是堆内存不足导致，所以单方面的加大了堆内存从4G调
       整到8G。
-   2. 但是问题依然没有解决，只能从堆内存信息下手，通过开启了~~-XX:+HeapDumpOnOutOfMemoryError~~参数 获得堆内存的dump文件。
+   2. 但是问题依然没有解决，只能从堆内存信息下手，通过开启了`-XX:+HeapDumpOnOutOfMemoryError`参数 获得堆内存的dump文件。
    3. VisualVM 对 堆dump文件进行分析，通过VisualVM查看到占用内存最大的对象是String对象，本来想跟踪着String对象找到其引用的地方，但dump文件太大，跟踪进去的时候总是卡死，而String对象占用比较多也比较正常，最开始也没有认定就是这里的问题，于是就从线程信息里面找突破点。
    4. 通过线程进行分析，先找到了几个正在运行的业务线程，然后逐一跟进业务线程看了下代码，发现有个引起我注意的方法，导出订单信息。
    5. 因为订单信息导出这个方法可能会有几万的数据量，首先要从数据库里面查询出来订单信息，然后把订单信息生成excel，这个过程会产生大量的String对象。

@@ -74,7 +74,7 @@ CPU会通过时间片分配算法来循环执行任务，当前任务执行完�
 
 ## Java中守护线程和用户线程的区别？ *
 
-任何线程都可以设置为守护线程和用户线程，通过方法 ~~Thread.setDaemon(bool on)~~ 设置， true 则是将该线程设置为守护线程， false 则是将该线程设置为用户线程。同时， Thread.setDaemon() 必须在 Thread.start() 之前调用，否则运行时会抛出异常。
+任何线程都可以设置为守护线程和用户线程，通过方法 `Thread.setDaemon(bool on)` 设置， true 则是将该线程设置为守护线程， false 则是将该线程设置为用户线程。同时， Thread.setDaemon() 必须在 Thread.start() 之前调用，否则运行时会抛出异常。
 
 用户线程：平时使用到的线程均为用户线程。
 
@@ -1162,7 +1162,7 @@ ObjectMonitor() {
 
 前面已经了解Monitor的实现细节，而Java虚拟机则是通过进入和退出Monitor对象来实现方法同步和代码块同步的。
 
-这里为了更方便看程序字节码执行指令，先在IDEA中安装了一个 ~~jclasslib Bytecode viewer~~ 插件。
+这里为了更方便看程序字节码执行指令，先在IDEA中安装了一个 `jclasslib Bytecode viewer` 插件。
 
 我们先来看这个synchronized作用于同步代码块的代码。
 
@@ -1634,17 +1634,17 @@ JDK1.7中扩容时，每个元素的rehash之后，都会插入到新数组对�
 
 ### ConcurrentHashMap迭代器是强一致性还是弱一致性？
 
-与HashMap不同的是， ~~ConcurrentHashMap~~ 迭代器是弱一致性。
+与HashMap不同的是， `ConcurrentHashMap` 迭代器是弱一致性。
 
-这里解释一下弱一致性是什么意思，当 ~~ConcurrentHashMap~~ 的迭代器创建后，会遍历哈希表中的元素，在遍历的过程中，哈希表中的元素可能发生变化，如果这部分变化发生在已经遍历过的地方，迭代器则不会反映出来，如果这部分变化发生在未遍历过的地方，迭代器则会反映出来。换种说法就是 `put()` 方法将一个元素加入到底层数据结构后， `get()` 可能在某段时间内还看不到这个元素。
+这里解释一下弱一致性是什么意思，当 `ConcurrentHashMap` 的迭代器创建后，会遍历哈希表中的元素，在遍历的过程中，哈希表中的元素可能发生变化，如果这部分变化发生在已经遍历过的地方，迭代器则不会反映出来，如果这部分变化发生在未遍历过的地方，迭代器则会反映出来。换种说法就是 `put()` 方法将一个元素加入到底层数据结构后， `get()` 可能在某段时间内还看不到这个元素。
 
-这样的设计主要是为 ~~ConcurrenthashMap~~ 的性能考虑，如果想做到强一致性，就要到处加锁，性能会下降很多。所以 ~~ConcurrentHashMap~~ 是支持在迭代过程中，向map中添加元素的，而 ~~HashMap~~ 这样操作则会抛出异常。
+这样的设计主要是为 `ConcurrenthashMap` 的性能考虑，如果想做到强一致性，就要到处加锁，性能会下降很多。所以 `ConcurrentHashMap` 是支持在迭代过程中，向map中添加元素的，而 `HashMap` 这样操作则会抛出异常。
 
 ## ThreadLocal ***
 
 ### 什么是ThreadLocal？有哪些应用场景？
 
-~~ThreadLocal~~ 是 ~~JDK java.lang~~ 包下的一个类， ~~ThreadLocal~~ 为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量，并且不会和其他线程的局部变量冲突，实现了线程间的数据隔离。
+`ThreadLocal` 是 `JDK java.lang` 包下的一个类， `ThreadLocal` 为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量，并且不会和其他线程的局部变量冲突，实现了线程间的数据隔离。
 
 ThreadLocal 的应用场景主要有以下几个方面：
 
@@ -1664,7 +1664,7 @@ ThreadLocal 的原理可以概括为下图：
 
 <img src="https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220815220352108.png" alt="image-20220815220352108" style="zoom:67%;" />
 
-从上图可以看出每个线程都有一个~~ThreadLocalMap~~，~~ThreadLocalMap~~中保存着所有的~~ThreadLocal~~ ，而 ~~ThreadLocal~~ 本身只是一个引用本身并不保存值，值都是保存在 ~~ThreadLocalMap~~中的，其中~~ThreadLocal~~ 为 ~~ThreadLocalMap~~ 中的 key 。其中图中的虚线表示弱引用。
+从上图可以看出每个线程都有一个`ThreadLocalMap`，`ThreadLocalMap`中保存着所有的`ThreadLocal` ，而 `ThreadLocal` 本身只是一个引用本身并不保存值，值都是保存在 `ThreadLocalMap`中的，其中`ThreadLocal` 为 `ThreadLocalMap` 中的 key 。其中图中的虚线表示弱引用。
 这里简单说下Java中的引用类型，Java的引用类型主要分为强引用、软引用、弱引用和虚引用。
 
 - **强引用**：发生 gc 的时候不会被回收。
@@ -1678,11 +1678,11 @@ ThreadLocal 的原理可以概括为下图：
 
 > 如何解决ThreadLocal的内存泄漏？
 
-其实在 ~~ThreadLocal~~ 在设计的时候已经考虑到了这种情况，在调用 set()、get()、remove() 等方法时就会清理掉 key 为 `null` 的记录，所以在使用完 ~~ThreadLocal~~ 后最好手动调用 remove() 方法。
+其实在 `ThreadLocal` 在设计的时候已经考虑到了这种情况，在调用 set()、get()、remove() 等方法时就会清理掉 key 为 `null` 的记录，所以在使用完 `ThreadLocal` 后最好手动调用 remove() 方法。
 
 #### 为什么要将key设计成ThreadLocal的弱引用？
 
-如果 ThreadLocal 的 key 是强引用，**同样会发生内存泄漏**的。如果 ThreadLocal 的 key 是强引用，引用的~~ThreadLocal~~ 的对象被回收了，但是 ~~ThreadLocalMap~~ 还持有 ~~ThreadLocal~~ 的强引用，如果没有手动删除，~~ThreadLocal~~ 不会被回收，发生内存泄漏。
+如果 ThreadLocal 的 key 是强引用，**同样会发生内存泄漏**的。如果 ThreadLocal 的 key 是强引用，引用的`ThreadLocal` 的对象被回收了，但是 `ThreadLocalMap` 还持有 `ThreadLocal` 的强引用，如果没有手动删除，`ThreadLocal` 不会被回收，发生内存泄漏。
 
 如果是弱引用的话，引用的 ThreadLocal 的对象被回收了，即使没有手动删除， ThreadLocal 也会被回收。 value 也会在 ThreadLocalMap 调用 set()、get()、remove() 的时候会被清除。
 
@@ -1690,7 +1690,7 @@ ThreadLocal 的原理可以概括为下图：
 
 #### 为什么不将value设计成ThreadLocal的弱引用？
 
-不设置为弱引用，是因为**不清楚**这个~~Value~~除了~~map~~的引用还是否还存在**其他引用**，如果不存在其他引用，当~~GC~~的时候就会直接将这个Value干掉了，而此时我们的~~ThreadLocal~~还处于使用期间，就会造成Value为 `null`的**错误**，所以将其设置为强引用。
+不设置为弱引用，是因为**不清楚**这个`Value`除了`map`的引用还是否还存在**其他引用**，如果不存在其他引用，当`GC`的时候就会直接将这个Value干掉了，而此时我们的`ThreadLocal`还处于使用期间，就会造成Value为 `null`的**错误**，所以将其设置为强引用。
 
 代码示例
 
@@ -1714,7 +1714,7 @@ put success
 get null
 ```
 
-可以发现，如果value也是弱引用的话，就会在~~GC~~时被清理掉，导致获取到 `null`的情况
+可以发现，如果value也是弱引用的话，就会在`GC`时被清理掉，导致获取到 `null`的情况
 
 ```java
 ublic static void main(String[] args) throws Exception {
@@ -1737,7 +1737,7 @@ put success
 get 2
 ```
 
-但是这里为什么又可以输出2呢，因为在 cache 中维护了 ~~Integer~~ 的 -128 ~ 127 的强引用。
+但是这里为什么又可以输出2呢，因为在 cache 中维护了 `Integer` 的 -128 ~ 127 的强引用。
 
 ## 线程池 ***
 
@@ -1753,15 +1753,15 @@ get 2
 
 ### 创建线程池的几种方法
 
-线程池的常用创建方式主要有两种，通过Executors工厂方法创建和通过new ~~ThreadPoolExecutor~~方法创建。
+线程池的常用创建方式主要有两种，通过Executors工厂方法创建和通过new `ThreadPoolExecutor`方法创建。
 
 - Executors工厂方法创建，在工具类 Executors 提供了一些静态的工厂方法
 
-  1. ~~new SingleThreadExecutor~~ ：创建一个单线程的线程池。适用于多个任务顺序使用的场景
-  2. ~~new FixedThreadPool~~ ：创建固定大小的线程池。 适用于任务量固定耗时长的任务。
-  3. ~~new CachedThreadPool~~ ：创建一个可缓存的线程池。适合任务量大但耗时少的任务。
-  4. ~~new ScheduledThreadPool~~ ：创建一个大小无限的线程池。适合固定周期的定时任务或重复任务。
-- new ~~ThreadPoolExecutor~~ 方法创建： 通过 new ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue< Runnable> workQueue，ThreadFactory threadFactory,RejectedExecutionHandler handler) 自定义创建
+  1. `new SingleThreadExecutor` ：创建一个单线程的线程池。适用于多个任务顺序使用的场景
+  2. `new FixedThreadPool` ：创建固定大小的线程池。 适用于任务量固定耗时长的任务。
+  3. `new CachedThreadPool` ：创建一个可缓存的线程池。适合任务量大但耗时少的任务。
+  4. `new ScheduledThreadPool` ：创建一个大小无限的线程池。适合固定周期的定时任务或重复任务。
+- new `ThreadPoolExecutor` 方法创建： 通过 new ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue< Runnable> workQueue，ThreadFactory threadFactory,RejectedExecutionHandler handler) 自定义创建
 
 
 
@@ -1786,12 +1786,12 @@ get 2
 
 ### ThreadPoolExecutor的饱和策略（拒绝策略）
 
-当同时运行的线程数量达到最大线程数量并且阻塞队列也已经放满了任务时， ~~ThreadPoolExecutor~~ 会指定一些饱和策略。主要有以下四种类型：
+当同时运行的线程数量达到最大线程数量并且阻塞队列也已经放满了任务时， `ThreadPoolExecutor` 会指定一些饱和策略。主要有以下四种类型：
 
-- ~~AbortPolicy~~ ：该策略会直接抛出异常拒绝新任务
-- ~~CallerRunsPolicy~~ ：当线程池无法处理当前任务时，会将该任务交由提交任务的线程来执行。
-- ~~DiscardPolicy~~ ：直接丢弃新任务。
-- ~~DiscardOleddestPolicy~~ ：丢弃最早的未处理的任务请求。
+- `AbortPolicy` ：该策略会直接抛出异常拒绝新任务
+- `CallerRunsPolicy` ：当线程池无法处理当前任务时，会将该任务交由提交任务的线程来执行。
+- `DiscardPolicy` ：直接丢弃新任务。
+- `DiscardOleddestPolicy` ：丢弃最早的未处理的任务请求。
 
 线程池的执行流程
 创建线程池创建后提交任务的流程如下图所示
@@ -1807,7 +1807,7 @@ get 2
 
 ### 什么是CAS?
 
-CAS 即 ~~Compare And Swap~~，翻译成中文即比较并替换。Java中可以通过CAS操作来保证原子性，原子性就是不可被中断的一些列操作或者一个操作，简单来说就是一系列操作，要么全部完成，要么失败，不能被中断。
+CAS 即 `Compare And Swap`，翻译成中文即比较并替换。Java中可以通过CAS操作来保证原子性，原子性就是不可被中断的一些列操作或者一个操作，简单来说就是一系列操作，要么全部完成，要么失败，不能被中断。
 
 CAS 操作包含三个操作数 ——  内存位置（V）、预期原值（A）和新值(B)。如果内存位置的值V与预期原值A相匹配，那么处理器会自动将该位置值V更新为新值B，否则，处理器不做任何操作，整个操作保证了原子性，即在对比V==A后、设置V=B之前不会有其他线程修改V的值。
 
@@ -1864,7 +1864,7 @@ AQS这部分相对复杂一些，想要深入理解需要去阅读源码，篇�
 
 ### 什么是AQS？
 
-AQS的全称是~~AbstractQueuedSynchronizer~~，是一个用来构建锁和同步器的框架，像 ReentrantLock，Semaphore，FutureTask都是基于AQS实现的。
+AQS的全称是`AbstractQueuedSynchronizer`，是一个用来构建锁和同步器的框架，像 ReentrantLock，Semaphore，FutureTask都是基于AQS实现的。
 
 > AQS的原理
 
@@ -1889,7 +1889,7 @@ CLH 是 *Craig、Landin 和 Hagersten* 三位作者的缩写
 private volatile int state;
 ```
 
-通过 ~~volatile~~ 来保证state的线程可见性，state的访问方式主要有三种，如下
+通过 `volatile` 来保证state的线程可见性，state的访问方式主要有三种，如下
 
 ```java
 protected final int getState() { //获取state的值
@@ -1913,7 +1913,7 @@ protected final boolean compareAndSetState(int expect, int update) {
 
 AQS的底层使用了模板方法模式，自定义同步器只需要两步：
 
-1. 继承~~AbstractQueuedSynchronizer~~
+1. 继承`AbstractQueuedSynchronizer`
 2. 重写以下几种方法：
    - isHeldExclusively()：该线程是否正在独占资源。只有用到condition才需要去实现它。
    - tryAcquire(int)：独占方式，尝试获取资源。
@@ -1921,10 +1921,10 @@ AQS的底层使用了模板方法模式，自定义同步器只需要两步：
    - tryAcquireShared(int)：共享方式，尝试获取资源。负数表示失败，0表示成功，但无剩余可用资源，正数表示成功并且有剩余资源
    - tryReleaseShared(int)：共享方式，尝试释放资源
 
-下面举例说明，以独占式的 ~~ReentrantLock~~ 为例， ~~state~~ 初始状态为0，表示未锁定状态。A线程进行 `lock()` 时，会调用 `tryAcquire()` 独占该锁并将 ~~state+1~~。此后，其他线程再调用 `tryAcquire()` 时就会失败，直到A线程 `unlock()` 到state=0（即释放锁）为止，其它线程才有机会获取该锁。当然，释放锁之前，A线程自己是可以重复获取此锁的（state会累加），这就是可重入的概念。但要注意，获取多少次就要释放多少次，这样才能保证state是能回到零态的。
+下面举例说明，以独占式的 `ReentrantLock` 为例， `state` 初始状态为0，表示未锁定状态。A线程进行 `lock()` 时，会调用 `tryAcquire()` 独占该锁并将 `state+1`。此后，其他线程再调用 `tryAcquire()` 时就会失败，直到A线程 `unlock()` 到state=0（即释放锁）为止，其它线程才有机会获取该锁。当然，释放锁之前，A线程自己是可以重复获取此锁的（state会累加），这就是可重入的概念。但要注意，获取多少次就要释放多少次，这样才能保证state是能回到零态的。
 
-再以共享式的 ~~CountDownLatch~~ 以例，任务分为N个子线程去执行，state也初始化为N（注意N要与线程个数一致）。这N个子线程是并行执行的，每个子线程执行完后 `countDown()` 一次，state会CAS减1。等到所有子线程都执行完后(即state=0)，会 `unpark()` 主调用线程，然后主调用线程就会从 `await()` 函数返回，继续后续动作。一般来说，自定义同步器要么是独占方法，要么是共享方式，他们也只需实现 ~~tryAcquiretryRelease~~ 、~~tryAcquireShared-tryReleaseShared~~ 中的一种即可。但AQS也支持自定义同步器同时实现独占和共享两种方式，如 ~~ReentrantReadWriteLock~~ 。
+再以共享式的 `CountDownLatch` 以例，任务分为N个子线程去执行，state也初始化为N（注意N要与线程个数一致）。这N个子线程是并行执行的，每个子线程执行完后 `countDown()` 一次，state会CAS减1。等到所有子线程都执行完后(即state=0)，会 `unpark()` 主调用线程，然后主调用线程就会从 `await()` 函数返回，继续后续动作。一般来说，自定义同步器要么是独占方法，要么是共享方式，他们也只需实现 `tryAcquiretryRelease` 、`tryAcquireShared-tryReleaseShared` 中的一种即可。但AQS也支持自定义同步器同时实现独占和共享两种方式，如 `ReentrantReadWriteLock` 。
 
-~~CountDownLatch~~ ：https://blog.csdn.net/hbtj_1216/article/details/109655995
+`CountDownLatch` ：https://blog.csdn.net/hbtj_1216/article/details/109655995
 
 AQS参考博客：https://www.cnblogs.com/waterystone/p/4920797.html

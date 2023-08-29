@@ -106,7 +106,7 @@ public static Integer valueOf(int i) {
 }  
 ```
 
-可以看到当不满足 if 语句中的条件，就会重新创建一个对象返回，那结果必然不相等。继续打开 ~~IntegerCache~~ 可以看到
+可以看到当不满足 if 语句中的条件，就会重新创建一个对象返回，那结果必然不相等。继续打开 `IntegerCache` 可以看到
 
 ```java
 private static class IntegerCache {
@@ -1481,14 +1481,14 @@ a
   1. 实现Serializable接口
   2. 实现Externalizable接口
 
-~~Serializable~~ 和 ~~Externalizable~~ 的区别：
+`Serializable` 和 `Externalizable` 的区别：
 
 https://blog.csdn.net/securitit/article/details/106694445
 
 > 区别
 
 - Serializable 劣势
-  - 实现Serializable接口，可以通过Java的序列化机制自动完成JavaBean的序列化和反序列化过程，亦可以通过~~ObjectOutputStream.writeObject()~~和~~ObjectInputStream.readObject~~自定义部分序列化过程，但是主要序列化过程还是需要~~ObjectOutputStream.defaultWiteObject()~~和ObjectInputStream.defaultReadObject默认操作来完成。
+  - 实现Serializable接口，可以通过Java的序列化机制自动完成JavaBean的序列化和反序列化过程，亦可以通过`ObjectOutputStream.writeObject()`和`ObjectInputStream.readObject`自定义部分序列化过程，但是主要序列化过程还是需要`ObjectOutputStream.defaultWiteObject()`和ObjectInputStream.defaultReadObject默认操作来完成。
 
 使用Serializable序列化有一些缺点是无法避免的：
 

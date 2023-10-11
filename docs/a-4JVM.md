@@ -171,6 +171,35 @@ Java堆中会划分出一块内存来作为句柄，reference中存储的是对�
 
 - **[空间分配担保](#空间分配担保机制)失败**:通过Minor GC后进入老年代的平均大小大于老年代的可用空间，会触发Full GC
 
+- CMS特有:concurrent mode failure
+
+https://blog.csdn.net/weixin_61034701/article/details/132207413
+
+> concurrent mode failure是什么？
+>
+
+　　CMS垃圾收集器特有的错误，CMS的垃圾清理和引用线程是并行进行的，如果在并行清理的过程中老年代的空间不足以容纳应用产生的垃圾（也就是老年代正在清理，从年轻代晋升了新的对象，或者直接分配大对象年轻代放不下导致直接在老年代生成，这时候老年代也放不下），则会抛出“concurrent mode failure”。
+
+> concurrent mode failure影响
+
+老年代的垃圾收集器从CMS退化为Serial Old，所有应用线程被暂停，停顿时间变长。
+
+可能原因及方案
+
+- 原因1：CMS触发太晚
+  - 方案：将-XX:CMSInitiatingOccupancyFraction=N调小；
+- 原因2：空间碎片太多
+  - 方案：开启空间碎片整理，并将空间碎片整理周期设置在合理范围；
+    -XX:+UseCMSCompactAtFullCollection （空间碎片整理）
+    -XX:CMSFullGCsBeforeCompaction=n
+- 原因3：垃圾产生速度超过清理速度
+  - 晋升阈值过小；
+  - Survivor空间过小；
+  - Eden区过小，导致晋升速率提高；
+  - 存在大对象；
+
+
+
 ### 为什么要减少Full GC的发生？
 
 Full GC发生过于频繁，会影响性能，因为Full GC会导致STW(Stop-The-World)，STW指的是用户线程在运行至安全点（safe point）或安全区域（safe region）之后，就自行挂起，进入暂停状态，对外的表现就是卡顿。所以应尽量减少Full GC的次数。不过不论是minor gc还是major gc都会STW，区别只在于STW的时间长短
@@ -200,9 +229,9 @@ Java对象的内存分配主要就是在堆上，Java堆的基本结构如下，
 
 注：为了可以更好地适应不同程度的内存状况，虚拟机并不是必须要求对象的年龄达到MaxTenuringThreshold才进入老年代，如果在Survivor空间中相同年龄所有对象大小的总和大于 Survivor空间的一半，年龄大于或等于该年龄的对象可以直接进入老年代，无需等到MaxTenuringThreshold
 
-<span id="空间分配担保机制"> </span>
 
-### 空间分配担保机制 
+
+### <span id="空间分配担保机制">空间分配担保机制</span>
 
 * 在发生Minor GC之前虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象总空间
   1. 如果大于，则表明Minor GC可以安全进行。
@@ -217,6 +246,14 @@ Java对象的内存分配主要就是在堆上，Java堆的基本结构如下，
 > 空间分配担保机制的作用
 
 其实很简单，就是怕Minor GC后需要进入到老年代的对象太多了，老年代没有那么大空间，先提前检查一下，如果检查结果显示老年代确实装不下，那么这次Minor GC就得改成Full GC，那Full GC完了老年代空间还是不够呢？那会OOM内存溢出的
+
+
+
+### GC 流程
+
+https://zhuanlan.zhihu.com/p/615616580
+
+
 
 ## Java中都有哪些引用类型
 
@@ -397,6 +434,10 @@ G1收集器的运作步骤如下：
 
 ![image-20220802211800759](https://cdn.jsdelivr.net/gh/hxznh/images@main/image-20220802211800759.png)
 
+> 详解
+
+https://blog.csdn.net/wssc63262/article/details/128695783
+
 ## 关于类加载
 
 先解释下什么是类加载机制，虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型。其实在看类加载之前最好了解下类文件结构，因为面试中这部分问的不多就不介绍了。
@@ -496,6 +537,10 @@ DriverManager类是在java.sql包中，java.sql包的位置是`jdk\jre\lib\rt.ja
 
 ## JVM调优相关
 
+
+
+
+
 ## Java进程启动参数
 
 
@@ -571,6 +616,12 @@ JVM调优肯定不是乱调的，也应先确定瓶颈及调优目标，如下�
 - 确定调优策略及调整相关参数，这是个不断对比分析和调整的过程，很难一步到位的
 
 ### JVM调优案例
+
+https://zhuanlan.zhihu.com/p/373853432
+
+https://zhuanlan.zhihu.com/p/615607956
+
+
 
 前面简单介绍了JVM调优的方法和策略，下面从网上找了一些调优的案例，大家可以参考一下
 

@@ -138,37 +138,6 @@ private static class IntegerCache {
     } 
     private IntegerCache() {}
 }
-
-{
-    "question": [
-        {
-            "id": 11,
-            "pid": 0,
-            "messageId": 3,
-            "content": "是否自觉遵守考场规则？",
-            "type": 1,
-            "children": [	// 选项
-                {
-                    "id": 12,
-                    "pid": 11,
-                    "messageId": 3,
-                    "content": "是",
-                    "type": 1,
-                    "count": ,	// 选择该选项的人数
-                    "children": []
-                },
-                {
-                    "id": 13,
-                    "pid": 11,
-                    "messageId": 3,
-                    "content": "否",
-                    "type": 1,
-                    "children": []
-                }
-            ]
-        }
-    ]
-}
 ```
 
 代码挺长，大概说的就是在通过 valueOf 方法创建 Integer 对象的时候，如果数值在[-128,127]之间，便返回指向 IntegerCache.cache 中已经存在的对象的引用；否则创建一个新的 Integer对象。所以上面代码中 a 与 b 相等， c 与 d 不相等。
@@ -345,6 +314,108 @@ String的不可变性，指的是String指向的字符串值是不可变的，�
 ### 什么是字符串常量池？*
 
   字符串常量池位于堆内存中，专门用来存储字符串常量，可以提高内存的使用率，避免开辟多块空间存储相同的字符串，在创建字符串时 JVM 会首先检查字符串常量池，如果该字符串已经存在池中，则返回它的引用，如果不存在，则实例化一个字符串放到池中，并返回其引用。
+
+### new String(“abc”)
+
+1. String s =“abc“与String s = new String(“abc“)的区别
+
+   String s =“abc”，如果[字符串常量池](https://so.csdn.net/so/search?q=字符串常量池&spm=1001.2101.3001.7020)中不存在abc，会在字符串常量池中创建一个abc；如果已经存在，则s指向已经存在的abc。
+   String s = new String(“abc”)会在堆中创建新的abc，不管之前是否存在。如果字符串常量池中不存在abc，则会在常量池中创建该字符串的引用。如果常量池中已经存在abc，则不会重新创建，常量池中的字符串不会重复。
+
+2. new String(“abc”)创建了几个对象
+
+   从java1.7开始字符串常量池就搬到了堆，所以在字符串常量池中创建的abc也是在堆里，会创建1个或2个对象
+
+   如果字符串常量池中不存在对象abc的引用，那么会在堆中创建两个abc对象
+   如果字符串常量池中已存在对象abc的引用，则会在堆中创建1个abc对象
+
+> 其他情况
+
+情况1：
+
+```csharp
+（1）
+String str1 = "abc"; 
+System.out.println(str1 == "abc"); 
+```
+
+**步骤**：
+
+1. 栈中开辟一块空间存放引用str1；
+2. String池中开辟一块空间，存放String常量"abc"；
+3. 引用str1指向池中String常量"abc"；
+4. str1所指代的地址即常量"abc"所在地址，输出为true；
+
+情况2：
+
+```dart
+（2）
+String str2 = new String("abc"); 
+System.out.println(str2 == "abc");
+```
+
+**步骤**：
+
+1. 栈中开辟一块空间存放引用str2；
+2. 堆中开辟一块空间存放一个新建的String对象"abc"；
+3. 引用str2指向堆中的新建的String对象"abc"；
+4. str2所指代的对象地址为堆中地址，而常量"abc"地址在池中，输出为false；
+
+**注意：**对于通过 new 产生的对象，会先去常量池检查有没有 “abc”，如果没有，先在常量池创建一个 “abc” 对象，然后在堆中创建一个常量池中此 “abc” 对象的拷贝对象。
+
+
+
+```dart
+有道面试题： String s = new String(“xyz”); 产生几个对象？
+一个或两个。如果常量池中原来没有 ”xyz”, 就是两个。如果原来的常量池中存在“xyz”时，就是一个。
+```
+
+对于基础类型的变量和常量：变量和引用存储在栈中，常量存储在常量池中。
+
+情况3、4：
+
+```dart
+（3）
+String str1 = "a"；
+String str2 = "b"；
+String str3 = str1 + "b"；
+//str1 和 str2 是字符串常量，所以在编译期就确定了。
+//str3 中有个 str1 是引用，所以不会在编译期确定。
+//又因为String是 final 类型的，所以在 str1 + "b" 的时候实际上是创建了一个新的对象，在把新对象的引用传给str3。
+
+（4）
+final String str1 = "a"；
+String str2 = "b"；
+String str3 = str1 + "b"；
+//这里和(3)的不同就是给 str1 加上了一个final，这样str1就变成了一个常量。
+//这样 str3 就可以在编译期中就确定了
+```
+
+情况5：
+
+intern()方法：当调用 intern 方法时，如果常量池已经包含一个等于此 String 对象的字符串（该对象由  equals(Object) 方法确定），则返回常量池中的字符串。否则，将此 String 对象添加到池中，并且返回此 String  对象的引用。
+
+```csharp
+（5）
+String str1 = "ab"；
+String str2 = new String("ab");
+System.out.println(str1== str2);//false
+System.out.println(str2.intern() == str1);//true
+
+System.out.println(str1== str2);//false
+str2 = str2.intern();
+System.out.println(str1== str2);//true
+```
+
+**步骤：**
+ str1 指向的是常量池对象 "ab"；
+ str2 指向的是堆中的对象 "ab"；
+ 调用了 str2 = str2.intern() 后，str2.intern()判断常量池中是否有 "ab"对象，如果有就返回，没有就创建并返回，此时就返回的 str1 所指向的那个对象 "ab" 。
+ 所以 str1 == str2；
+
+
+
+参考: https://www.jianshu.com/p/2624036c9daa
 
 ### String 类的常用方法都有那些？**
 
@@ -740,6 +811,18 @@ Student
 | 访问修饰 符 | 抽象方法可以有public、protected和 default这些修饰符        | 接口方法默认修饰符是public。你不可以使用其它修饰符 |
 | 构造器      | 抽象类可以有构造器                                         | 接口不能有构造器                                   |
 | 字段声明    | 抽象类的字段声明可以是任意的                               | 接口的字段默认都是 static 和 final 的              |
+
+
+
+> 设计方式
+
+接口是自上而下的：设计接口时不在意具体实现
+
+抽象类是自下而上的：设计抽象类时是将子类的共同特性提取出来后设计为抽象类。
+
+
+
+
 
 ## 函数式接口
 

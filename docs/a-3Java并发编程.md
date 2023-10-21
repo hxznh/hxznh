@@ -1798,6 +1798,7 @@ get 2
 - `CallerRunsPolicy` ：当线程池无法处理当前任务时，会将该任务交由提交任务的线程来执行。
 - `DiscardPolicy` ：直接丢弃新任务。
 - `DiscardOleddestPolicy` ：丢弃最早的未处理的任务请求。
+- 自定义策略：实现 `RejectedExecutionHandler` 接口
 
 线程池的执行流程
 创建线程池创建后提交任务的流程如下图所示
